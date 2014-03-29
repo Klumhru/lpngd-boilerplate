@@ -1,3 +1,11 @@
+$www_root = "/var/www"
+
+$project_name = 'unimods'
+
+$project_home = "$www_root/$project_name"
+
+$venv_home = "$project_home/venv.$project_name"
+
 group { "puppet":
     ensure => present
 }
@@ -7,11 +15,11 @@ File{
     group => 'www-data'
 }
 
-file { "/var/www":
+file { $www_root:
     ensure => directory,
     mode => '2775';
 }
-file { "/var/www/unimods":
+file { $project_home:
     ensure => directory,
     mode => '2775';
 }
@@ -32,4 +40,16 @@ class { "postgresql::globals":
 } ->
 class { 'postgresql::server':
 
+}
+
+class { 'python':
+    dev        => true,
+    pip        => true,
+    virtualenv => true,
+    gunicorn   => true,
+} ->
+python::virtualenv { $venv_home:
+    requirements => "$project_home/conf/requirements.txt",
+    owner => 'vagrant',
+    group => 'www-data',
 }

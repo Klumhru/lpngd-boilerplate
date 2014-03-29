@@ -15,6 +15,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       mkdir -p /etc/puppet/modules
       sed -ie s/us.archive.ubuntu.com/is.archive.ubuntu.com/gi /etc/apt/sources.list
       apt-get update -qq
+      test -f /usr/bin/pip || apt-get install python-pip -y
+      pip install --upgrade pip virtualenv
       puppet module list |grep puppetlabs-apt || puppet module install puppetlabs-apt
       puppet module list |grep puppetlabs-postgresql || puppet module install puppetlabs-postgresql
       puppet module list |grep puppetlabs-nginx || puppet module install puppetlabs-nginx

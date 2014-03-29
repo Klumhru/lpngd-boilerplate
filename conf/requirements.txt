@@ -1,0 +1,7 @@
+--allow-unverified=all
+django>=1.6,<1.7
+djangorestframework
+markdown
+django-filter
+django-jsonfield
+psycopg2
