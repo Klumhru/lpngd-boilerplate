@@ -1,7 +1,24 @@
---allow-unverified=all
+# Django modules
 django>=1.6,<1.7
 djangorestframework
-markdown
 django-filter
 django-jsonfield
+django-hstore
+django-dbarray
+django-nose
+
+# Database modules
 psycopg2
+south
+
+# Test modules
+nose
+coverage
+flake8
+
+# Additional modules
+markdown
+
+# Parameters to allow externals and unverifieds
+--allow-external nose
+--allow-unverified=all
