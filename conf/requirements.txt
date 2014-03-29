@@ -16,6 +16,10 @@ nose
 coverage
 flake8
 
+# Runtime modules
+gunicorn
+gevent
+
 # Additional modules
 markdown
 
