@@ -39,9 +39,11 @@ class { "postgresql::globals":
     locale => 'is_IS.utf-8'
 } ->
 class { 'postgresql::server':
-
-}
-
+    ensure => present,
+} ->
+package { 'libpq-dev':
+    ensure => present,
+} ->
 class { 'python':
     dev        => true,
     pip        => true,
