@@ -6,6 +6,8 @@ $project_home = "$www_root/$project_name"
 
 $venv_home = "$project_home/venv.$project_name"
 
+include nginx
+
 group { "puppet":
     ensure => present
 }
@@ -63,8 +65,17 @@ upstart::job { "gunicorn_$project_name":
     description    => "basic runserver for $project_name",
     respawn        => true,
     respawn_limit  => '5 10',
+    ensure         => 'present',
     user           => 'www-data',
     group          => 'www-data',
     chdir          => "$project_home/$project_name",
-    exec           => "$venv_home/bin/python manage.py run_gunicorn -w 4 -k gevent",
+    exec           => "$venv_home/bin/python manage.py run_gunicorn -w 4 -k gevent --max-requests 1",
+} ->
+nginx::resource::upstream { 'gunicorn_unimods':
+    members => [
+        'localhost:8000'
+    ]
+} ->
+nginx::resource::vhost { 'mods.amyingoh.org':
+    proxy => 'http://gunicorn_unimods'
 }
