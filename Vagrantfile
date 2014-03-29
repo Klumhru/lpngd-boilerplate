@@ -15,13 +15,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       mkdir -p /etc/puppet/modules
       sed -ie s/us.archive.ubuntu.com/is.archive.ubuntu.com/gi /etc/apt/sources.list
       apt-get update -qq
-      test -f /usr/bin/pip || apt-get install python-pip -y
-      pip install --upgrade pip virtualenv
+      test -f /usr/bin/git || apt-get install git -y
+      test -f /usr/bin/pip || apt-get install python-pip -y && pip install --upgrade pip virtualenv
+      puppet module list |grep inkblot-github || puppet module install inkblot-github
       puppet module list |grep puppetlabs-apt || puppet module install puppetlabs-apt
       puppet module list |grep puppetlabs-postgresql || puppet module install puppetlabs-postgresql
       puppet module list |grep puppetlabs-nginx || puppet module install puppetlabs-nginx
       puppet module list |grep stankevich-python || puppet module install stankevich-python
-      puppet module list |grep ajcrowe-supervisord || puppet module install ajcrowe-supervisord
+      puppet module list |grep krakatoa-upstart || puppet module install krakatoa-upstart
     eos
   end
 
