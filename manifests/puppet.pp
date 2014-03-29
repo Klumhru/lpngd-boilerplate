@@ -29,7 +29,8 @@ user { "vagrant":
 }
 
 package{ ['language-pack-is',
-          'vim']:
+          'vim',
+          'curl']:
     ensure => present
 } ->
 class { "postgresql::globals":
@@ -54,4 +55,16 @@ python::virtualenv { $venv_home:
     requirements => "$project_home/conf/requirements.txt",
     owner => 'vagrant',
     group => 'www-data',
+} ->
+class { 'upstart':
+    user_jobs => true,
+} ->
+upstart::job { "gunicorn_$project_name":
+    description    => "basic runserver for $project_name",
+    respawn        => true,
+    respawn_limit  => '5 10',
+    user           => 'www-data',
+    group          => 'www-data',
+    chdir          => "$project_home/$project_name",
+    exec           => "$venv_home/bin/python manage.py run_gunicorn -w 4 -k gevent",
 }
