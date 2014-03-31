@@ -1,13 +1,15 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# Only tested so far with ubuntu/precise virtualbox. 
+# There is some hardcoding going on in the puppet file that assumes Ubuntu config paths.
 BOX = "hashicorp/precise64"
 
 # Base variables. You can set these directly in the manifests/puppet.pp
 # file if you want to be able to apply the puppet file locally - see bottom for fact names
 # (with sudo puppet apply manifests/puppet.pp)
 WWW_ROOT = "/var/www"
-PROJECT_NAME = 'unimods'
+PROJECT_NAME = 'boilerplate'
 PROJECT_HOME = "#{WWW_ROOT}/#{PROJECT_NAME}"
 VENV_HOME = "#{PROJECT_HOME}/venv.#{PROJECT_NAME}"
 GUNICORN_SOCKET = "unix:/tmp/#{PROJECT_NAME}.gunicorn.sock"
