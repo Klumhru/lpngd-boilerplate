@@ -77,6 +77,9 @@ upstart::job { "gunicorn_$project_name":
     chdir          => "$project_home/$project_name",
     exec           => "$venv_home/bin/python manage.py run_gunicorn -w 4 -k gevent -b $gunicorn_socket --max-requests 1",
 } ->
+file { '/etc/nginx/conf.d/default.conf':
+    ensure => absent,
+} ->
 file { "nginx_vhost_$project_name":
     owner => vagrant, group => vagrant,
     path => "$project_home/conf/nginx_vhost.conf",
