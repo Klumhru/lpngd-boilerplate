@@ -1,4 +1,4 @@
 venv.*/
 .vagrant/
-unimods.sublime-workspace
+*.sublime-workspace
 staticfiles/*
