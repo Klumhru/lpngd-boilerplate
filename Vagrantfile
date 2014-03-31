@@ -1,12 +1,18 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+BOX = "hashicorp/precise64"
+
+# Base variables. You can set these directly in the manifests/puppet.pp
+# file if you want to be able to apply the puppet file locally - see bottom for fact names
+# (with sudo puppet apply manifests/puppet.pp)
 WWW_ROOT = "/var/www"
 PROJECT_NAME = 'unimods'
 PROJECT_HOME = "#{WWW_ROOT}/#{PROJECT_NAME}"
 VENV_HOME = "#{PROJECT_HOME}/venv.#{PROJECT_NAME}"
 GUNICORN_SOCKET = "unix:/tmp/#{PROJECT_NAME}.gunicorn.sock"
 
+# You can use these in your django settings if you like
 DB_NAME = PROJECT_NAME
 DB_USER = PROJECT_NAME
 DB_PASS = "ChangeMe!"
@@ -15,11 +21,11 @@ DB_PASS = "ChangeMe!"
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "hashicorp/precise64"
+  config.vm.box = BOX
   config.vm.network :forwarded_port, guest: 80, host: 8080
   config.vm.network :forwarded_port, guest: 8000, host: 8001
   config.ssh.forward_agent = true
-  config.vm.synced_folder "../unimods", "/var/www/unimods"
+  config.vm.synced_folder "../#{PROJECT_NAME}", "/var/www/#{PROJECT_NAME}"
 
   config.vm.provision :shell do |shell|
     shell.inline = <<-eos
