@@ -1,11 +1,21 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+WWW_ROOT = "/var/www"
+PROJECT_NAME = 'unimods'
+PROJECT_HOME = "#{WWW_ROOT}/#{PROJECT_NAME}"
+VENV_HOME = "#{PROJECT_HOME}/venv.#{PROJECT_NAME}"
+GUNICORN_SOCKET = "unix:/tmp/#{PROJECT_NAME}.gunicorn.sock"
+
+DB_NAME = PROJECT_NAME
+DB_USER = PROJECT_NAME
+DB_PASS = "ChangeMe!"
+
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "precise64"
+  config.vm.box = "hashicorp/precise64"
   config.vm.network :forwarded_port, guest: 80, host: 8080
   config.vm.network :forwarded_port, guest: 8000, host: 8001
   config.ssh.forward_agent = true
@@ -29,6 +39,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.provision :puppet do |puppet|
+    puppet.facter = {
+      "www_root" => WWW_ROOT,
+      "project_name" => PROJECT_NAME,
+      "project_home" => PROJECT_HOME,
+      "venv_home" => VENV_HOME,
+      "gunicorn_socket" => GUNICORN_SOCKET,
+      "db_name" => DB_NAME,
+      "db_user" => DB_USER,
+      "db_pass" => DB_PASS
+    }
     puppet.manifest_file  = "puppet.pp"
   end
 end
