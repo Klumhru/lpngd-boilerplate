@@ -39,6 +39,9 @@ INSTALLED_APPS = (
 
     # Gunicorn support
     'gunicorn',
+
+    # Database management
+    'south',
 )
 
 MIDDLEWARE_CLASSES = (
