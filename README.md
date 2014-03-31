@@ -1,24 +1,22 @@
-LNGD Boilerplate
+LPNGD Boilerplate
 =======
 
-This is a simple Linux Nginx Gunicorn Django boilerplate Vagrant setup.
+This is a simple Linux PostgreSQL Nginx Gunicorn Django [ ;) ] boilerplate Vagrant setup.
 
-Quite a bit of django/gunicorn/nginx knowledge is assumed here as this is simply a project I made to save me some work when setting up new django projects.
+Quite a bit of django/gunicorn/nginx knowledge is assumed here as this is a project I made to save myself some work when setting up new django projects.
+
+Most settings are set up to run for development, i.e. gunicorn workers only serve a single request before recycling and debug settings are set to true. This is NOT a production setup. When development is done it should nevertheless be little work involved in deployment. Creating a production.py settings file with sane production settings should not be too hard. See below for puppet adjustments for standalone apply operation.
 
 Feel free to post issues and pull requests.
 
 # Installation
 
-Start by cloning and removing the git binding
+Start by cloning and removing the git binding and then provision the vagrant box
 ````
 git clone git@github.com:Klumhru/lngd-boilerplate.git <projecname>
 cd <projectname>
 rm -rf .git
 git init # optional
-````
-
-Edit Vagrantfile and set PROJECT_NAME to whatever you want. Feel free to edit the other configuration variables if you like. Run vagrant.
-````
 vagrant up
 ````
 
@@ -36,7 +34,24 @@ http://localhost:8080
 
 The django project in /var/www/<projectname>/boilerplate is set up with some useful defaults and postgresql database support. The nginx/gunicorn runtime is set up to run this project by default. Of course you are recommended to set up your own django project and change the upstart job in /etc/upstart to run off there instead.
 
+The boilerplate does not do management commands like syncdb and collectstatic for you, you have to take care of that yourself.
+````
+vagrant ssh
+cd /var/www/<projectname>
+. venv.boilerplate/bin/activate
+cd boilerplate
+python manage.py syncdb
+python manage.py collectstatic
+````
+
 You can run the django dev server manually on 0.0.0.0:8000 and connect to localhost:8001 where the port is redirected.
+````
+vagrant ssh
+cd /var/www/<projectname>
+. venv.boilerplate/bin/activate
+cd boilerplate
+python manage.py runserver 0.0.0.0:8000
+````
 
 # Hacking the config
 
