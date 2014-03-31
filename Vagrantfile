@@ -57,4 +57,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     }
     puppet.manifest_file  = "puppet.pp"
   end
+
+  config.vm.provision :shell do |shell|
+    shell.inline = 'service nginx restart'
+  end
 end
