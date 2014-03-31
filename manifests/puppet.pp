@@ -92,4 +92,5 @@ file { "nginx_vhost_$project_name-link":
     target => "$project_home/conf/nginx_vhost.conf",
 }
 
+File['/etc/nginx/conf.d/default.conf'] ~> Service['nginx']
 File["nginx_vhost_$project_name"] ~> Service['nginx']
