@@ -3,6 +3,10 @@ LNGD Boilerplate
 
 This is a simple Linux Nginx Gunicorn Django boilerplate Vagrant setup.
 
+Quite a bit of django/gunicorn/nginx knowledge is assumed here as this is simply a project I made to save me some work when setting up new django projects.
+
+Feel free to post issues and pull requests.
+
 # Installation
 
 Start by cloning and removing the git binding
@@ -28,7 +32,15 @@ By default the vagrant box will bind its http port to you local 8080 so point yo
 http://localhost:8080
 ````
 
+# Django
+
+The django project in /var/www/<projectname>/boilerplate is set up with some useful defaults and postgresql database support. The nginx/gunicorn runtime is set up to run this project by default. Of course you are recommended to set up your own django project and change the upstart job in /etc/upstart to run off there instead.
+
+You can run the django dev server manually on 0.0.0.0:8000 and connect to localhost:8001 where the port is redirected.
+
 # Hacking the config
+
+The project will live in /var/www/<projectname> by default.
 
 The project is set up as your project name and then run from gunicorn pointing to the default manage.py script with the command run_gunicorn. The gunicorn is set to run on a socket but you can change that in the Vagrantfile.
 
