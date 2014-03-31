@@ -2,3 +2,4 @@ venv.*/
 .vagrant/
 *.sublime-workspace
 staticfiles/*
+*.py[oc]
